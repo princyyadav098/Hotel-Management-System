@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management - Reports</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        nav {
+            background: #1e3a5f;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        .back-btn {
+            background: white;
+            color: #1e3a5f;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card h3 {
+            color: #555;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1e73be;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .table-card h2 {
+            color: #1e3a5f;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        .paid {
+            color: green;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: red;
+            font-weight: bold;
+        }
+
+        .print-btn {
+            background: #1e73be;
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .print-btn:hover {
+            background: #155a96;
+        }
+
+        @media(max-width: 800px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 500px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 95%;
+            }
+        }
+
+        @media print {
+            nav,
+            .print-btn {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .card,
+            .table-card {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <h2>Hotel Management System</h2>
+    <a href="dashboard.html" class="back-btn">Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <!-- Summary Cards -->
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Rooms</h3>
+            <div class="number" id="totalRooms">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Guests</h3>
+            <div class="number" id="totalGuests">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Bookings</h3>
+            <div class="number" id="totalBookings">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Revenue</h3>
+            <div class="number" id="totalRevenue">₹0</div>
+        </div>
+
+    </div>
+
+
+    <!-- Booking Report -->
+    <div class="table-card">
+
+        <h2>Booking Report</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Guest</th>
+                        <th>Room</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Amount</th>
+                        <th>Payment</th>
+                    </tr>
+                </thead>
+
+                <tbody id="reportTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <button class="print-btn" onclick="window.print()">
+            Print Report
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // Get data from localStorage
+    let rooms =
+        JSON.parse(localStorage.getItem("hotelRooms")) || [];
+
+    let guests =
+        JSON.parse(localStorage.getItem("hotelGuests")) || [];
+
+    let bookings =
+        JSON.parse(localStorage.getItem("hotelBookings")) || [];
+
+
+    // Total Rooms
+    document.getElementById("totalRooms").innerText =
+        rooms.length;
+
+
+    // Total Guests
+    document.getElementById("totalGuests").innerText =
+        guests.length;
+
+
+    // Total Bookings
+    document.getElementById("totalBookings").innerText =
+        bookings.length;
+
+
+    // Total Revenue
+    let revenue = 0;
+
+    bookings.forEach(function(booking) {
+
+        revenue += Number(booking.amount) || 0;
+
+    });
+
+
+    document.getElementById("totalRevenue").innerText =
+        "₹" + revenue;
+
+
+    // Booking Report
+    let table =
+        document.getElementById("reportTable");
+
+
+    if (bookings.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    No bookings available.
+                </td>
+            </tr>
+        `;
+
+    } else {
+
+        bookings.forEach(function(booking) {
+
+            let payment =
+                booking.paymentStatus || "Pending";
+
+            let paymentClass =
+                payment === "Paid"
+                ? "paid"
+                : "pending";
+
+
+            let row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>${booking.id}</td>
+
+                <td>${booking.guestName}</td>
+
+                <td>${booking.roomNumber}</td>
+
+                <td>${booking.checkIn}</td>
+
+                <td>${booking.checkOut}</td>
+
+                <td>₹${booking.amount}</td>
+
+                <td class="${paymentClass}">
+                    ${payment}
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

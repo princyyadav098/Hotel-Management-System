@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qafila Stay Hotel - Bookings</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #1e3c72;
+            color: white;
+            padding-top: 25px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            padding: 0 10px 30px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 5px 12px;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #2a5298;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .topbar h1 {
+            color: #1e3c72;
+        }
+
+        /* FORM */
+        .form-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .form-box h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1e3c72;
+        }
+
+        .amount-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f4f8;
+            border-radius: 8px;
+        }
+
+        .amount-box span {
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .add-btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #16305c;
+        }
+
+        /* TABLE */
+        .table-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .table-header h2 {
+            color: #1e3c72;
+        }
+
+        .search {
+            width: 230px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f1f4f8;
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #b02a37;
+        }
+
+        @media (max-width: 900px) {
+            .form-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                padding: 15px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .table-box {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏨 Qafila Stay Hotel
+    </div>
+
+    <ul class="menu">
+
+        <li>
+            <a href="dashboard.html">
+                🏠 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="rooms.html">
+                🛏️ Rooms
+            </a>
+        </li>
+
+        <li>
+            <a href="guests.html">
+                👤 Guests
+            </a>
+        </li>
+
+        <li>
+            <a href="bookings.html" class="active">
+                📅 Bookings
+            </a>
+        </li>
+
+        <li>
+            <a href="billing.html">
+                💰 Billing
+            </a>
+        </li>
+
+        <li>
+            <a href="#" onclick="logout()">
+                🚪 Logout
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Bookings Management</h1>
+    </div>
+
+
+    <!-- ADD BOOKING -->
+
+    <div class="form-box">
+
+        <h2>Create New Booking</h2>
+
+        <form id="bookingForm">
+
+            <div class="form-row">
+
+                <div>
+                    <label>Guest Name</label>
+
+                    <select id="guestSelect" required>
+                        <option value="">Select Guest</option>
+                    </select>
+                </div>
+
+
+                <div>
+                    <label>Room Number</label>
+
+                    <select id="roomSelect" required>
+                        <option value="">Select Available Room</option>
+                    </select>
+                </div>
+
+
+                <div>
+                    <label>Check-In Date</label>
+
+                    <input
+                        type="date"
+                        id="checkIn"
+                        required
+                    >
+                </div>
+
+
+                <div>
+                    <label>Check-Out Date</label>
+
+                    <input
+                        type="date"
+                        id="checkOut"
+                        required
+                    >
+                </div>
+
+
+                <div>
+                    <label>Number of Guests</label>
+
+                    <input
+                        type="number"
+                        id="numberOfGuests"
+                        min="1"
+                        value="1"
+                        required
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="amount-box">
+
+                Number of Nights:
+                <span id="nights">0</span>
+
+                &nbsp;&nbsp; | &nbsp;&nbsp;
+
+                Total Amount:
+                ₹<span id="totalAmount">0</span>
+
+            </div>
+
+
+            <button type="submit" class="add-btn">
+                + Create Booking
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- BOOKINGS TABLE -->
+
+    <div class="table-box">
+
+        <div class="table-header">
+
+            <h2>All Bookings</h2>
+
+            <input
+                type="text"
+                id="searchBooking"
+                class="search"
+                placeholder="Search booking..."
+                onkeyup="displayBookings()"
+            >
+
+        </div>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Guest</th>
+                    <th>Room</th>
+                    <th>Check-In</th>
+                    <th>Check-Out</th>
+                    <th>Nights</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="bookingTable

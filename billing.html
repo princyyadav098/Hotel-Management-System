@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Qafila Stay Hotel - Billing</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #1e3c72;
+            color: white;
+            padding-top: 25px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            padding: 0 10px 30px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 5px 12px;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #2a5298;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .topbar h1 {
+            color: #1e3c72;
+        }
+
+        /* BILLING FORM */
+        .billing-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .billing-box h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #1e3c72;
+        }
+
+        /* DETAILS */
+        .details {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f1f4f8;
+            border-radius: 10px;
+        }
+
+        .details h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 12px;
+            border-radius: 7px;
+        }
+
+        .detail-item span {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .detail-item strong {
+            color: #333;
+        }
+
+        /* BILL SUMMARY */
+        .summary {
+            margin-top: 25px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            max-width: 500px;
+            margin-left: auto;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .grand-total {
+            border-top: 2px solid #1e3c72;
+            margin-top: 10px;
+            padding-top: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .button-row {
+            margin-top: 25px;
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .generate-btn {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background: #16305c;
+        }
+
+        .print-btn {
+            background: #198754;
+            color: white;
+        }
+
+        .print-btn:hover {
+            background: #146c43;
+        }
+
+        /* BILL TABLE */
+        .table-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .table-box h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f1f4f8;
+        }
+
+        .paid {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .unpaid {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            background: #1e3c72;
+            color: white;
+            padding: 7px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .form-row,
+            .detail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                padding: 15px;
+            }
+
+            .form-row,
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-box {
+                overflow-x: auto;
+            }
+        }
+
+        /* PRINT */
+        @media print {
+
+            .sidebar,
+            .topbar,
+            .billing-box,
+            .table-box {
+                display: none;
+            }
+
+            .main {
+                margin: 0;
+                padding: 0;
+            }
+
+            #printBill {
+                display: block !important;
+            }
+        }
+
+        #printBill {
+            display: none;
+        }
+
+        .invoice {
+            width: 800px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            border-bottom: 2px solid #1e3c72;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .invoice-header h1 {
+            color: #1e3c72;
+            font-size: 30px;
+        }
+
+        .invoice-header p {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .invoice-table th,
+        .invoice-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+
+        .invoice-total {
+            margin-left: auto;
+            width: 300px;
+            margin-top: 20px;
+        }
+
+        .invoice-total div {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px;
+        }
+
+        .invoice-total .final {
+            border-top: 2px solid #1e3c72;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏨 Qafila Stay Hotel
+    </div>
+
+    <ul class="menu">
+
+        <li>
+            <a href="dashboard.html">
+                🏠 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="rooms.html">
+                🛏️ Rooms
+            </a>
+        </li>
+
+        <li>
+            <a href="guests.html">
+                👤 Guests
+            </a>
+        </li>
+
+        <li>
+            <a href="bookings.html">
+                📅 Bookings
+            </a>
+        </li>
+
+        <li>
+            <a href="billing.html" class="active">
+                💰 Billing
+            </a>
+        </li>
+
+        <li>
+            <a href="#" onclick="logout()">
+                🚪 Logout
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Billing & Invoice</h1>
+    </div>
+
+
+    <!-- BILLING -->
+
+    <div class="billing-box">
+
+        <h2>Generate Bill</h2>
+
+        <div class="form-row">
+
+            <div>
+                <label>Select Booking</label>
+
+                <select id="bookingSelect">
+                    <option value="">Select Booking</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Payment Method</label>
+
+                <select id="paymentMethod">
+
+                    <option value="Cash">Cash</option>
+
+                    <option value="UPI">UPI</option>
+
+                    <option value="Credit Card">
+                        Credit Card
+                    </option>
+
+                    <option value="Debit Card">
+                        Debit Card
+                    </option>
+
+                </select>
+            </div>
+
+            <div>
+                <label>GST (%)</label>
+
+                <input
+                    type="number"
+                    id="gst"
+                    value="5"
+                    min="0"
+                    max="100"
+                >
+            </div>
+
+        </div>
+
+
+        <!-- BOOKING DETAILS -->
+
+        <div class="details">
+
+            <h3>Booking Details</h3>
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <span>Guest Name</span>
+                    <strong id="guestName">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Room Number</span>
+                    <strong id="roomNumber">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Check-In</span>
+                    <strong id="checkIn">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Check-Out</span>
+                    <strong id="checkOut">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Number of Nights</span>
+                    <strong id="nights">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Room Charges</span>
+                    <strong>₹<span id="roomCharges">0</span></strong>
+                </div>
+
+            </div>
+
+
+            <!-- SUMMARY -->
+
+            <div class="summary">
+
+                <div class="summary-row">
+                    <span>Room Charges</span>
+                    <span>₹<span id="summaryRoom">0</span></span>
+                </div>
+
+                <div class="summary-row">
+                    <span>GST</span>
+                    <span>₹<span id="summaryGST">0</span></span>
+                </div>
+
+                <div class="summary-row grand-total">
+                    <span>Total</span>
+                    <span>₹<span id="grandTotal">0</span></span>
+                </div>
+
+            </div>
+
+
+            <div class="button-row">
+
+                <button
+                    class="generate-btn"
+                    onclick="generateBill()">
+
+                    Generate Bill
+
+                </button>
+
+                <button
+                    class="print-btn"
+                    onclick="printBill()">
+
+                    🖨️ Print Bill
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BILL HISTORY -->
+
+    <div class="table-box">
+
+        <h2>Billing History</h2>
+
+        <table>
+
+            <thead>
+
+                <

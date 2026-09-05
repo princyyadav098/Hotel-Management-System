@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Qafila Stay Hotel - Rooms</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #1e3c72;
+            color: white;
+            padding-top: 25px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            padding: 0 10px 30px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 5px 12px;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #2a5298;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .topbar h1 {
+            color: #1e3c72;
+        }
+
+        /* FORM */
+
+        .form-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .form-box h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1e3c72;
+        }
+
+        .btn-row {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .save-btn {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+            display: none;
+        }
+
+        /* TABLE */
+
+        .table-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .table-header h2 {
+            color: #1e3c72;
+        }
+
+        .search {
+            width: 250px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f1f4f8;
+        }
+
+        .available {
+            background: #d4edda;
+            color: #155724;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .occupied {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #212529;
+            padding: 7px 11px;
+            margin-right: 5px;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 7px 11px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .form-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                padding: 15px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .table-box {
+                overflow-x: auto;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏨 Qafila Stay Hotel
+    </div>
+
+    <ul class="menu">
+
+        <li>
+            <a href="dashboard.html">
+                🏠 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="rooms.html" class="active">
+                🛏️ Rooms
+            </a>
+        </li>
+
+        <li>
+            <a href="guests.html">
+                👤 Guests
+            </a>
+        </li>
+
+        <li>
+            <a href="bookings.html">
+                📅 Bookings
+            </a>
+        </li>
+
+        <li>
+            <a href="billing.html">
+                💰 Billing
+            </a>
+        </li>
+
+        <li>
+            <a href="#" onclick="logout()">
+                🚪 Logout
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Rooms Management</h1>
+    </div>
+
+
+    <!-- ADD / EDIT ROOM -->
+
+    <div class="form-box">
+
+        <h2 id="formTitle">Add New Room</h2>
+
+        <form id="roomForm">
+
+            <div class="form-row">
+
+                <div>
+
+                    <label>Room Number</label>
+
+                    <input
+                        type="text"
+                        id="roomNumber"
+                        placeholder="Example: 101"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Room Type</label>
+
+                    <select id="roomType" required>
+
+                        <option value="">
+                            Select Room Type
+                        </option>
+
+                        <option value="Standard">
+                            Standard
+                        </option>
+
+                        <option value="Deluxe">
+                            Deluxe
+                        </option>
+
+                        <option value="Suite">
+                            Suite
+                        </option>
+
+                        <option value="Family">
+                            Family
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>Price Per Night</label>
+
+                    <input
+                        type="number"
+                        id="roomPrice"
+                        placeholder="Example: 2500"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Status</label>
+
+                    <select id="roomStatus" required>
+
+                        <option value="Available">
+                            Available
+                        </option>
+
+                        <option value="Occupied">
+                            Occupied
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="btn-row">
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                    id="saveBtn">
+
+                    + Add Room
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    id="cancelBtn"
+                    onclick="cancelEdit()">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- ROOM TABLE -->
+
+    <div class="table-box">
+
+        <div class="table-header">
+
+            <h2>All Rooms</h2>
+
+            <input
+                type="text"
+                id="searchRoom"
+                class="search"
+                placeholder="Search room..."
+                onkeyup="displayRooms()"
+            >
+
+        </div>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Room No.</th>
+
+                    <th>Type</th>
+
+                    <th>Price / Night</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="roomTableBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       LOGIN CHECK
+    ========================= */
+
+    const loggedInUser =
+        JSON.parse(
+            localStorage.getItem("loggedInUser")
+        );
+
+
+    if (!loggedInUser) {
+
+        window.location.href = "login.html";
+
+    }
+
+
+    /* =========================
+       GET ROOMS
+    ========================= */
+
+    let rooms =
+        JSON.parse(
+            localStorage.getItem("hotelRooms")
+        ) || [];
+
+
+    let editRoomId = null;
+
+
+    /* =========================
+       FORM SUBMIT
+    ========================= */
+
+    document
+        .getElementById("roomForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const roomNumber =
+                document
+                    .getElementById("roomNumber")
+                    .value
+                    .trim();
+
+
+            const roomType =
+                document
+                    .getElementById("roomType")
+                    .value;
+
+
+            const roomPrice =
+                Number(
+                    document
+                        .getElementById("roomPrice")
+                        .value
+                );
+
+
+            const roomStatus =
+                document
+                    .getElementById("roomStatus")
+                    .value;
+
+
+            /* =========================
+               EDIT ROOM
+            ========================= */
+
+            if (editRoomId !== null) {
+
+                const index =
+                    rooms.findIndex(function(room) {
+
+                        return room.id === editRoomId;
+
+                    });
+
+
+                if (index !== -1) {
+
+                    rooms[index].number =
+                        roomNumber;
+
+                    rooms[index].type =
+                        roomType;
+
+                    rooms[index].price =
+                        roomPrice;
+
+                    rooms[index].status =
+                        roomStatus;
+
+                }
+
+
+                editRoomId = null;
+
+                document.getElementById("formTitle")
+                    .textContent = "Add New Room";
+
+                document.getElementById("saveBtn")
+                    .textContent = "+ Add Room";
+
+                document.getElementById("cancelBtn")
+                    .style.display = "none";
+
+
+                alert("Room updated successfully!");
+
+            }
+
+            /* =========================
+               ADD ROOM
+            ========================= */
+
+            else {
+
+                const alreadyExists =
+                    rooms.some(function(room) {
+
+                        return (
+                            room.number.toLowerCase() ===
+                            roomNumber.toLowerCase()
+                        );
+
+                    });
+
+
+                if (alreadyExists) {
+
+                    alert(
+                        "This room number already exists."
+                    );
+
+                    return;
+
+                }
+
+
+                const newRoom = {
+
+                    id: Date.now(),
+
+                    number: roomNumber,
+
+                    type: roomType,
+
+                    price: roomPrice,
+
+                    status: roomStatus
+
+                };
+
+
+                rooms.push(newRoom);
+
+
+                alert(
+                    "Room added successfully!"
+                );
+
+            }
+
+
+            /* SAVE */
+
+            localStorage.setItem(
+                "hotelRooms",
+                JSON.stringify(rooms)
+            );
+
+
+            document
+                .getElementById("roomForm")
+                .reset();
+
+
+            displayRooms();
+
+        });
+
+
+    /* =========================
+       DISPLAY ROOMS
+    ========================= */
+
+    function displayRooms() {
+
+        const tableBody =
+            document.getElementById(
+                "roomTableBody"
+            );
+
+
+        const search =
+            document
+                .getElementById("searchRoom")
+                .value
+                .toLowerCase();
+
+
+        tableBody.innerHTML = "";
+
+
+        const filteredRooms =
+            rooms.filter(function(room) {
+
+                return (
+
+                    room.number
+                        .toLowerCase()
+                        .includes(search)
+
+                    ||
+
+                    room.type
+                        .toLowerCase()
+                        .includes(search)
+
+                    ||
+
+                    room.status
+                        .toLowerCase()
+                        .includes(search)
+
+                );
+
+            });
+
+
+        if (filteredRooms.length === 0) {
+
+            tableBody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="5"
+                        class="empty">
+
+                        No rooms found
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        filteredRooms.forEach(function(room) {
+
+            const row =
+                document.createElement("tr");
+
+
+            const statusClass =
+                room.status === "Available"
+                    ? "available"
+                    : "occupied";
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${room.number}
+                </td>
+
+                <td>
+                    ${room.type}
+                </td>
+
+                <td>
+                    ₹${Number(room.price)
+                        .toLocaleString("en-IN")}
+                </td>
+
+                <td>
+
+                    <span class="${statusClass}">
+
+                        ${room.status}
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editRoom(${room.id})">
+
+                        Edit
+
+                    </button>
+
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteRoom(${room.id})">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(row);
+
+        });
+
+    }
+
+
+    /* =========================
+       EDIT ROOM
+    ========================= */
+
+    function editRoom(id) {
+
+        const room =
+            rooms.find(function(item) {
+
+                return item.id === id;
+
+            });
+
+
+        if (!room) {
+            return;
+        }
+
+
+        editRoomId = id;
+
+
+        document.getElementById("roomNumber")
+            .value = room.number;
+
+
+        document.getElementById("roomType")
+            .value = room.type;
+
+
+        document.getElementById("roomPrice")
+            .value = room.price;
+
+
+        document.getElementById("roomStatus")
+            .value = room.status;
+
+
+        document.getElementById("formTitle")
+            .textContent = "Edit Room";
+
+
+        document.getElementById("saveBtn")
+            .textContent = "Update Room";
+
+
+        document.getElementById("cancelBtn")
+            .style.display = "inline-block";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* =========================
+       CANCEL EDIT
+    ========================= */
+
+    function cancelEdit() {
+
+        editRoomId = null;
+
+
+        document
+            .getElementById("roomForm")
+            .reset();
+
+
+        document.getElementById("formTitle")
+            .textContent = "Add New Room";
+
+
+        document.getElementById("saveBtn")
+            .textContent = "+ Add Room";
+
+
+        document.getElementById("cancelBtn")
+            .style.display = "none";
+
+    }
+
+
+    /* =========================
+       DELETE ROOM
+    ========================= */
+
+    function deleteRoom(id) {
+
+        const room =
+            rooms.find(function(item) {
+
+                return item.id === id;
+
+            });
+
+
+        if (!room) {
+            return;
+        }
+
+
+        if (room.status === "Occupied") {
+
+            alert(
+                "Occupied room cannot be deleted."
+            );
+
+            return;
+
+        }
+
+
+        const confirmDelete =
+            confirm(
+                "Are you sure you want to delete Room " +
+                room.number +
+                "?"
+            );
+
+
+        if (!confirmDelete) {
+            return;
+        }
+
+
+        rooms =
+            rooms.filter(function(item) {
+
+                return item.id !== id;
+
+            });
+
+
+        localStorage.setItem(
+            "hotelRooms",
+            JSON.stringify(rooms)
+        );
+
+
+        displayRooms();
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logout() {
+
+        const confirmLogout =
+            confirm(
+                "Are you sure you want to logout?"
+            );
+
+
+        if (confirmLogout) {
+
+            localStorage.removeItem(
+                "loggedInUser"
+            );
+
+            window.location.href =
+                "login.html";
+
+        }
+
+    }
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    displayRooms();
+
+</script>
+
+</body>
+</html>

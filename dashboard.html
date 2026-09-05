@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Qafila Stay Hotel - Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #1e3c72;
+            color: white;
+            padding-top: 25px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            padding: 0 10px 30px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 5px 12px;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #2a5298;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .topbar h1 {
+            color: #1e3c72;
+        }
+
+        .topbar p {
+            margin-top: 6px;
+            color: #666;
+        }
+
+        /* CARDS */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card-title {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        /* SECTION */
+
+        .section {
+            margin-top: 25px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        /* QUICK ACTIONS */
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            text-decoration: none;
+            background: #1e3c72;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 7px;
+        }
+
+        .action-btn:hover {
+            background: #16305c;
+        }
+
+        /* TABLE */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f1f4f8;
+        }
+
+        .confirmed {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                padding: 15px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏨 Qafila Stay Hotel
+    </div>
+
+    <ul class="menu">
+
+        <li>
+            <a href="dashboard.html" class="active">
+                🏠 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="rooms.html">
+                🛏️ Rooms
+            </a>
+        </li>
+
+        <li>
+            <a href="guests.html">
+                👤 Guests
+            </a>
+        </li>
+
+        <li>
+            <a href="bookings.html">
+                📅 Bookings
+            </a>
+        </li>
+
+        <li>
+            <a href="billing.html">
+                💰 Billing
+            </a>
+        </li>
+
+        <li>
+            <a href="#" onclick="logout()">
+                🚪 Logout
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <h1>Welcome to Qafila Stay Hotel</h1>
+
+        <p>
+            Hotel Management System Dashboard
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="cards">
+
+        <!-- TOTAL ROOMS -->
+
+        <div class="card">
+
+            <div class="icon">
+                🛏️
+            </div>
+
+            <div class="card-title">
+                Total Rooms
+            </div>
+
+            <div
+                class="card-value"
+                id="totalRooms">
+                0
+            </div>
+
+        </div>
+
+
+        <!-- AVAILABLE -->
+
+        <div class="card">
+
+            <div class="icon">
+                🟢
+            </div>
+
+            <div class="card-title">
+                Available Rooms
+            </div>
+
+            <div
+                class="card-value"
+                id="availableRooms">
+                0
+            </div>
+
+        </div>
+
+
+        <!-- OCCUPIED -->
+
+        <div class="card">
+
+            <div class="icon">
+                🔴
+            </div>
+
+            <div class="card-title">
+                Occupied Rooms
+            </div>
+
+            <div
+                class="card-value"
+                id="occupiedRooms">
+                0
+            </div>
+
+        </div>
+
+
+        <!-- GUESTS -->
+
+        <div class="card">
+
+            <div class="icon">
+                👥
+            </div>
+
+            <div class="card-title">
+                Total Guests
+            </div>
+
+            <div
+                class="card-value"
+                id="totalGuests">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SECOND ROW -->
+
+    <div
+        class="cards"
+        style="margin-top:20px;">
+
+        <!-- BOOKINGS -->
+
+        <div class="card">
+
+            <div class="icon">
+                📅
+            </div>
+
+            <div class="card-title">
+                Total Bookings
+            </div>
+
+            <div
+                class="card-value"
+                id="totalBookings">
+                0
+            </div>
+
+        </div>
+
+
+        <!-- REVENUE -->
+
+        <div class="card">
+
+            <div class="icon">
+                💰
+            </div>
+
+            <div class="card-title">
+                Total Revenue
+            </div>
+
+            <div
+                class="card-value"
+                id="totalRevenue">
+                ₹0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="section">
+
+        <h2>Quick Actions</h2>
+
+        <div class="actions">
+
+            <a
+                href="rooms.html"
+                class="action-btn">
+                + Add Room
+            </a>
+
+            <a
+                href="guests.html"
+                class="action-btn">
+                + Add Guest
+            </a>
+
+            <a
+                href="bookings.html"
+                class="action-btn">
+                + New Booking
+            </a>
+
+            <a
+                href="billing.html"
+                class="action-btn">
+                💰 Generate Bill
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT BOOKINGS -->
+
+    <div class="section">
+
+        <h2>Recent Bookings</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Booking ID</th>
+
+                    <th>Guest</th>
+
+                    <th>Room</th>
+
+                    <th>Check-In</th>
+
+                    <th>Check-Out</th>
+
+                    <th>Amount</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="recentBookings">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       LOGIN CHECK
+    ========================= */
+
+    const loggedInUser =
+        JSON.parse(
+            localStorage.getItem("loggedInUser")
+        );
+
+
+    if (!loggedInUser) {
+
+        window.location.href = "login.html";
+
+    }
+
+
+    /* =========================
+       LOAD DATA
+    ========================= */
+
+    function loadDashboard() {
+
+
+        /* ROOMS */
+
+        const rooms =
+            JSON.parse(
+                localStorage.getItem("hotelRooms")
+            ) || [];
+
+
+        /* GUESTS */
+
+        const guests =
+            JSON.parse(
+                localStorage.getItem("hotelGuests")
+            ) || [];
+
+
+        /* BOOKINGS */
+
+        const bookings =
+            JSON.parse(
+                localStorage.getItem("hotelBookings")
+            ) || [];
+
+
+        /* BILLS */
+
+        const bills =
+            JSON.parse(
+                localStorage.getItem("hotelBills")
+            ) || [];
+
+
+        /* =========================
+           ROOM COUNT
+        ========================= */
+
+        const totalRooms =
+            rooms.length;
+
+
+        const availableRooms =
+            rooms.filter(function(room) {
+
+                return room.status === "Available";
+
+            }).length;
+
+
+        const occupiedRooms =
+            rooms.filter(function(room) {
+
+                return room.status === "Occupied";
+
+            }).length;
+
+
+        document.getElementById("totalRooms")
+            .textContent = totalRooms;
+
+
+        document.getElementById("availableRooms")
+            .textContent = availableRooms;
+
+
+        document.getElementById("occupiedRooms")
+            .textContent = occupiedRooms;
+
+
+        /* =========================
+           GUESTS
+        ========================= */
+
+        document.getElementById("totalGuests")
+            .textContent = guests.length;
+
+
+        /* =========================
+           BOOKINGS
+        ========================= */
+
+        document.getElementById("totalBookings")
+            .textContent = bookings.length;
+
+
+        /* =========================
+           REVENUE
+        ========================= */
+
+        const revenue =
+            bills.reduce(function(total, bill) {
+
+                return total + Number(bill.total || 0);
+
+            }, 0);
+
+
+        document.getElementById("totalRevenue")
+            .textContent =
+            "₹" +
+            revenue.toLocaleString("en-IN");
+
+
+        /* =========================
+           RECENT BOOKINGS
+        ========================= */
+
+        const table =
+            document.getElementById(
+                "recentBookings"
+            );
+
+
+        table.innerHTML = "";
+
+
+        if (bookings.length === 0) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="empty">
+
+                        No bookings available
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* Last 5 bookings */
+
+        const recent =
+            bookings
+                .slice()
+                .reverse()
+                .slice(0, 5);
+
+
+        recent.forEach(function(booking) {
+
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${booking.bookingId}
+                </td>
+
+                <td>
+                    ${booking.guestName}
+                </td>
+
+                <td>
+                    ${booking.roomNumber}
+                </td>
+
+                <td>
+                    ${booking.checkIn}
+                </td>
+
+                <td>
+                    ${booking.checkOut}
+                </td>
+
+                <td>
+                    ₹${Number(
+                        booking.amount || 0
+                    ).toLocaleString("en-IN")}
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        });
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logout() {
+
+        const confirmLogout =
+            confirm(
+                "Are you sure you want to logout?"
+            );
+
+
+        if (confirmLogout) {
+
+            localStorage.removeItem(
+                "loggedInUser"
+            );
+
+            window.location.href =
+                "login.html";
+
+        }
+
+    }
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    loadDashboard();
+
+
+</script>
+
+</body>
+</html>
